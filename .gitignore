@@ -1,0 +1,4 @@
+bg-data/*
+solr-data/*
+postgres-data/*
+.env

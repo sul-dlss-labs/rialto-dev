@@ -1,0 +1,114 @@
+version: "3"
+services:
+  triplestore:
+    # image: lyrasis/blazegraph:2.1.4
+    build:
+      context: ./bg-docker
+    ports:
+      - "${TRIPLESTORE_PORT}:9999"
+    networks:
+      - rialto
+    volumes:
+      - "./bg-data:/data"
+    restart: unless-stopped
+  entity-resolver:
+    build:
+      context: $GOPATH/src/github.com/sul-dlss-labs/rialto-entity-resolver
+    environment:
+      - API_KEY=abc123
+      - SPARQL_ENDPOINT=http://triplestore:9999/blazegraph/namespace/kb/sparql
+    ports:
+      - "${ENTITY_RESOLVER_PORT}:3000"
+    depends_on:
+      - triplestore
+      - webapp
+    networks:
+      - rialto
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4567-4583:4567-4583"
+      - "${LOCALSTACK_UI_PORT}:8080"
+    depends_on:
+      - db
+      - solr
+    environment:
+      - SERVICES=lambda,sns,apigateway
+      - LAMBDA_EXECUTOR=docker
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - DEBUG=1
+    volumes:
+      # - "./localstack-data:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - rialto
+  db:
+    image: postgres
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      - POSTGRES_PASSWORD=sekret
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - rialto
+  solr:
+    image: solr
+    ports:
+     - "${SOLR_PORT}:8983"
+    volumes:
+      - "./solr-data:/opt/solr/server/solr/mycores"
+      - "../rialto-webapp/solr/conf:/solr-setup/conf"
+    entrypoint:
+      - docker-entrypoint.sh
+      - solr-precreate
+      - collection1
+      - /solr-setup/conf
+    networks:
+      - rialto
+  # Listens for creation of new lambda containers and assigns to rialto network.
+  docker-events-listener:
+    build:
+      context: ./events-listener-docker
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    privileged: true
+    networks:
+      - rialto
+  sparql-loader:
+    build:
+      context: ../sparql-loader
+      dockerfile: Dockerfile-dev
+    ports:
+      - "8082:8080"
+    environment:
+      - RIALTO_SPARQL_ENDPOINT=http://triplestore:9999/blazegraph/namespace/kb/sparql
+      - RIALTO_SNS_ENDPOINT=http://localstack:4575
+    depends_on:
+      - triplestore
+      - localstack
+    networks:
+      - rialto
+  webapp:
+    build:
+      context: ../rialto-webapp
+      dockerfile: Dockerfile-dev
+    volumes:
+      - "../rialto-webapp:/app"
+    ports:
+      - "${WEBAPP_PORT}:3000"
+      - "3035:3035"
+    environment:
+      - SOLR_URL=http://solr:8983/solr/collection1
+      - RDS_DB_NAME=rialto_development
+      - RDS_USERNAME=postgres
+      - RDS_PASSWORD=sekret
+      - RDS_HOSTNAME=db
+      - RDS_PORT=5432
+    depends_on:
+      - solr
+      - db
+    networks:
+      - rialto
+networks:
+  rialto:
