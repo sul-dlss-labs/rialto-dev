@@ -29,7 +29,7 @@ func main() {
 	handler := runtime.NewHandler(registry)
 
 	sparqlHandler := func(w http.ResponseWriter, req *http.Request) {
-		body := req_to_body(req)
+		body := reqToBody(req)
 		// Catch panics
 		defer func() {
 			if r := recover(); r != nil {
@@ -50,7 +50,7 @@ func main() {
 		// Will be invoking Lamda request handler.
 		// Need to map from http.Request to events.APIGatewayProxyRequest
 		resp, err := handler.RequestHandler(context.TODO(),
-			events.APIGatewayProxyRequest{Headers: req_to_headers(req),
+			events.APIGatewayProxyRequest{Headers: reqToHeaders(req),
 				Body: body})
 		if err != nil {
 			http.Error(w, err.Error(), 500)
@@ -64,19 +64,19 @@ func main() {
 
 	http.HandleFunc("/sparql", sparqlHandler)
 
-	address := fmt.Sprintf("%s:%s", get_env("HOST", ""), get_env("PORT", "8080"))
+	address := fmt.Sprintf("%s:%s", getEnv("HOST", ""), getEnv("PORT", "8080"))
 	log.Printf("Starting server on %s", address)
 
 	http.ListenAndServe(address, nil)
 }
 
-func req_to_body(req *http.Request) string {
-	body_buf := new(bytes.Buffer)
-	body_buf.ReadFrom(req.Body)
-	return body_buf.String()
+func reqToBody(req *http.Request) string {
+	bodyBuf := new(bytes.Buffer)
+	bodyBuf.ReadFrom(req.Body)
+	return bodyBuf.String()
 }
 
-func req_to_headers(req *http.Request) map[string]string {
+func reqToHeaders(req *http.Request) map[string]string {
 	header := make(map[string]string)
 	for key, value := range req.Header {
 		header[key] = value[0]
@@ -84,10 +84,10 @@ func req_to_headers(req *http.Request) map[string]string {
 	return header
 }
 
-func get_env(key string, default_value string) string {
+func getEnv(key string, defaultValue string) string {
 	value := os.Getenv(key)
 	if value == "" {
-		value = default_value
+		value = defaultValue
 	}
 	return value
 }
