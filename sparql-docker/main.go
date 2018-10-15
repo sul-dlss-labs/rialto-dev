@@ -18,11 +18,11 @@ import (
 
 func main() {
 	// Establish the clients and register the Lambda handler
-	neptuneClient := sparql.NewNeptuneClient(os.Getenv("RIALTO_SPARQL_ENDPOINT"))
+	neptuneClient := sparql.NewNeptuneClient(getEnv("RIALTO_SPARQL_ENDPOINT", ""))
 
-	snsClient := message.NewClient(os.Getenv("RIALTO_SNS_ENDPOINT"),
-		os.Getenv("RIALTO_TOPIC_ARN"),
-		os.Getenv("AWS_REGION"))
+	snsClient := message.NewClient(getEnv("RIALTO_SNS_ENDPOINT", ""),
+		getEnv("RIALTO_TOPIC_ARN", ""),
+		getEnv("AWS_REGION", ""))
 
 	registry := runtime.NewRegistry(neptuneClient, snsClient)
 
