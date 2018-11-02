@@ -19,13 +19,13 @@ A docker-based development environment for RIALTO
 mkdir rialto
 cd rialto
 git clone https://github.com/sul-dlss-labs/rialto-dev.git
-git clone https://github.com/sul-dlss-labs/rialto-etl.git
-git clone https://github.com/sul-dlss-labs/rialto-webapp.git
-git clone https://github.com/sul-dlss-labs/sparql-loader.git
-mkdir -p $GOPATH/src/github.com/sul-dlss-labs
-cd $GOPATH/src/github.com/sul-dlss-labs
-git clone https://github.com/sul-dlss-labs/rialto-derivatives.git
-git clone https://github.com/sul-dlss-labs/rialto-entity-resolver.git
+git clone https://github.com/sul-dlss/rialto-etl.git
+git clone https://github.com/sul-dlss/rialto-webapp.git
+git clone https://github.com/sul-dlss/sparql-loader.git
+mkdir -p $GOPATH/src/github.com/sul-dlss
+cd $GOPATH/src/github.com/sul-dlss
+git clone https://github.com/sul-dlss/rialto-derivatives.git
+git clone https://github.com/sul-dlss/rialto-entity-resolver.git
 ```
 
 1. Setup rialto-dev
@@ -61,13 +61,13 @@ npm install
 
 1. Setup sparql-loader
 ```
-cd $GOPATH/src/github.com/sul-dlss-labs/sparql-loader
+cd $GOPATH/src/github.com/sul-dlss/sparql-loader
 dep ensure
 ```
 
 1. Deploy rialto-derivatives
 ```
-cd $GOPATH/src/github.com/sul-dlss-labs/rialto-derivatives
+cd $GOPATH/src/github.com/sul-dlss/rialto-derivatives
 dep ensure
 make deploy-local
 ```
@@ -93,7 +93,7 @@ Rialto and components will now be available at:
 This should be performed after the dev environment has been started or whenever
 the localstack container has been restarted.
 ```
-cd $GOPATH/src/github.com/sul-dlss-labs/rialto-derivatives
+cd $GOPATH/src/github.com/sul-dlss/rialto-derivatives
 make local-deploy
 ```
 

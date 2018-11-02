@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
   entity-resolver:
     build:
-      context: $GOPATH/src/github.com/sul-dlss-labs/rialto-entity-resolver
+      context: $GOPATH/src/github.com/sul-dlss/rialto-entity-resolver
     environment:
       - API_KEY=abc123
       - SPARQL_ENDPOINT=http://triplestore:9999/blazegraph/namespace/kb/sparql
