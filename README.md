@@ -31,6 +31,7 @@ A docker-based development environment for RIALTO
     cd rialto-dev
     mkdir bg-data
     mkdir solr-data
+    # You may also need to do this: chmod 0777 solr-data
     mkdir postgres-data
     cp example.env .env
     ```
