@@ -71,12 +71,11 @@ used by the dev environment in `.env`.
     pip install -r requirements.txt
     ```
     
-1. Deploy rialto-derivatives
+1. Setup rialto-derivatives
     
     ```shell
     cd $GOPATH/src/github.com/sul-dlss/rialto-derivatives
     dep ensure
-    make local-deploy
     ```
 
 ## Starting dev environment
