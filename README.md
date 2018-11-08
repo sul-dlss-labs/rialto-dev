@@ -67,7 +67,7 @@ used by the dev environment in `.env`.
   
     ```shell
     cd sparql-loader
-    virtualenv -p $(which python3) env
+    virtualenv -p /path/to/python3.7 env
     source env/bin/activate
     pip install -r requirements.txt
     ```
