@@ -1,5 +1,6 @@
 # rialto-dev
-A docker-based development environment for RIALTO
+
+A docker-compose-based development environment for RIALTO
 
 ## Requirements
 * git
@@ -112,9 +113,11 @@ create them in Localstack, create a topic, and subscribe the lambdas to the topi
 
 Separate make commands exist for each of these steps.
 
+**Note**: If you make changes to the derivatives component, you will need to re-deploy it to Localstack using `make local-deploy`.
+
 ## Loading data
 
-Assuming that you have already extracted data and converted to sparql.
+(This section assumes you have already extracted data from relevant APIs and converted it to SPARQL.)
 
 Because this is a local development environment, it is recommended to only load
 a sample of data.
@@ -123,12 +126,6 @@ a sample of data.
 exe/load call Sparql -i organizations.sparql
 exe/load call Sparql -i researchers_sample.sparql
 ```
-
-Don't forget to cleanup containers with `docker container prune -f`.
-
-## Derivative lambda development
-
-Changes will need to be deployed to Localstack using `make local-deploy`.
 
 ## Webapp development
 
