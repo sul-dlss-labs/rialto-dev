@@ -55,6 +55,7 @@ used by the dev environment in `.env`.
 1. Setup rialto-webapp  
     ```shell
     cd rialto-webapp
+    bundle install
     npm install
     ```
     
