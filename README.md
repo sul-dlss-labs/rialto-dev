@@ -27,7 +27,7 @@ A docker-based development environment for RIALTO
     git clone https://github.com/sul-dlss/rialto-entity-resolver.git
     ```
 1. Setup rialto-dev
-    ```
+    ```shell
     cd rialto-dev
     mkdir bg-data
     mkdir solr-data
@@ -42,7 +42,7 @@ used by the dev environment in `.env`.
     
     Add `config/local.settings.yml`. In addition to actual API keys, this should include:
   
-    ```
+    ```yaml
     sparql_writer:
       update_url: http://localhost:8082/sparql
       batch_size: 1000
@@ -53,26 +53,27 @@ used by the dev environment in `.env`.
     ```
     
 1. Setup rialto-webapp  
-    ```
+    ```shell
     cd rialto-webapp
     npm install
     ```
     
 1. Setup sparql-loader  
-    ```
+    ```shell
     cd $GOPATH/src/github.com/sul-dlss/sparql-loader
     dep ensure
     ```
     
 1. Deploy rialto-derivatives
-    ```
+    ```shell
     cd $GOPATH/src/github.com/sul-dlss/rialto-derivatives
     dep ensure
     make deploy-local
     ```
 
 ## Starting dev environment
-```
+
+```shell
 cd rialto-dev
 docker-compose up -d
 ```
@@ -89,9 +90,11 @@ Rialto and components will now be available at:
 * Webapp: http://localhost:8080/
 
 ## Deploying derivative lambdas
+
 This should be performed after the dev environment has been started or whenever
 the localstack container has been restarted.
-```
+
+```shell
 cd $GOPATH/src/github.com/sul-dlss/rialto-derivatives
 make local-deploy
 ```
@@ -102,65 +105,78 @@ create them in Localstack, create a topic, and subscribe the lambdas to the topi
 Separate make commands exist for each of these steps.
 
 ## Loading data
+
 Assuming that you have already extracted data and converted to sparql.
 
 Because this is a local development environment, it is recommended to only load
 a sample of data.
 
-```
+```shell
 exe/load call Sparql -i organizations.sparql
 exe/load call Sparql -i researchers_sample.sparql
 ```
 
 Don't forget to cleanup containers with `docker container prune -f`.
 
-## Derivate lambda development
+## Derivative lambda development
+
 Changes will need to be deployed to Localstack using `make local-deploy`.
 
 ## Webapp development
+
 Since your local code is linked into the container, changes will automatically cause
 the running webapp to be reloaded.
 
 The first time that you invoke the webapp, there may be a wait as javascript is packed.
 
 If you change any gem files, rebuild the image with:
-```
+
+```shell
 docker-compose stop webapp
 docker-compose build webapp
 docker-compose up -d
 ```
 
-## Sparl loader development
+## Sparql loader development
+
 Local code is not linked into the container. To reload the server, the image must be rebuild.
-```
+
+```shell
 docker-compose stop sparql-loader
 docker-compose build sparql-loader
 docker-compose up -d
 ```
 
 ## Notes
+
 ### Connecting to the db
-```
+
+```shell
 docker exec -it rialto-dev_db_1 psql -h db -U postgres -d rialto_development
 ```
 
 ### Cleaning up docker containers
+
 Localstack creates a new container each time a lambda is executed. To clean up these containers:
-```
+
+```shell
 docker container prune -f
 ```
 
 ### Clearing state
+
 State for Blazegraph, Postgres, and Solr are persisted. (State for Localstack is not.)
 
 To clear state:
-```
+
+```shell
 rm -fr bg-data/*
 rm -fr postgres-data/*
 rm -fr solr-data/*
 ```
 
 ## Helpful docker commands
+
 * Stop all containers: `docker-compose stop`
 * Stop single container: `docker-compose stop webapp`
 * Remove all containers: `docker-compose rm -vf`
@@ -172,10 +188,11 @@ rm -fr solr-data/*
 * Shell into a container: `docker exec -it rialto-dev_webapp_1 /bin/bash`
 
 ## Kludges
+
 * Because of limitations in Localstack, the sparql loader lambda is run as a server in
   a docker container.
 * Because Localstack [does not attach the lambda docker containers to the correct network](https://github.com/localstack/localstack/issues/381),
-  the docker-events-listener container attachs them open creation. This introduces
+  the `docker-events-listener` container attachs them open creation. This introduces
   a latency in the lambdas being able to reach the triplestore, which is handled
   by retrying the connection.
 * When executing `db:setup`, [rails ignores the environment](https://github.com/rails/rails/issues/27299)
