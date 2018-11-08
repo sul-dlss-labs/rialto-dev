@@ -14,63 +14,62 @@ A docker-based development environment for RIALTO
 
 ## Setup
 1. Clone the repos
-
-```
-mkdir rialto
-cd rialto
-git clone https://github.com/sul-dlss-labs/rialto-dev.git
-git clone https://github.com/sul-dlss/rialto-etl.git
-git clone https://github.com/sul-dlss/rialto-webapp.git
-git clone https://github.com/sul-dlss/sparql-loader.git
-mkdir -p $GOPATH/src/github.com/sul-dlss
-cd $GOPATH/src/github.com/sul-dlss
-git clone https://github.com/sul-dlss/rialto-derivatives.git
-git clone https://github.com/sul-dlss/rialto-entity-resolver.git
-```
-
+    ```shell
+    mkdir rialto
+    cd rialto
+    git clone https://github.com/sul-dlss-labs/rialto-dev.git
+    git clone https://github.com/sul-dlss/rialto-etl.git
+    git clone https://github.com/sul-dlss/rialto-webapp.git
+    git clone https://github.com/sul-dlss/sparql-loader.git
+    mkdir -p $GOPATH/src/github.com/sul-dlss
+    cd $GOPATH/src/github.com/sul-dlss
+    git clone https://github.com/sul-dlss/rialto-derivatives.git
+    git clone https://github.com/sul-dlss/rialto-entity-resolver.git
+    ```
 1. Setup rialto-dev
-```
-cd rialto-dev
-mkdir bg-data
-mkdir solr-data
-mkdir postgres-data
-cp example.env .env
-```
+    ```
+    cd rialto-dev
+    mkdir bg-data
+    mkdir solr-data
+    mkdir postgres-data
+    cp example.env .env
+    ```
 
-If there are port conflicts with existing applications, you can change the ports
+    If there are port conflicts with existing applications, you can change the ports
 used by the dev environment in `.env`.
+    
+1. Setup rialto-etl  
+    
+    Add `config/local.settings.yml`. In addition to actual API keys, this should include:
+  
+    ```
+    sparql_writer:
+      update_url: http://localhost:8082/sparql
+      batch_size: 1000
 
-1. Setup rialto-etl
-Add `config/local.settings.yml`. In addition to actual API keys, this should include:
-
-```
-sparql_writer:
-  update_url: http://localhost:8082/sparql
-  batch_size: 1000
-
-entity_resolver:
-  url: http://localhost:3000/
-  api_key: abc123
-```
-
-1. Setup rialto-webapp
-```
-cd rialt-webapp
-npm install
-```
-
-1. Setup sparql-loader
-```
-cd $GOPATH/src/github.com/sul-dlss/sparql-loader
-dep ensure
-```
-
+    entity_resolver:
+      url: http://localhost:3000/
+      api_key: abc123
+    ```
+    
+1. Setup rialto-webapp  
+    ```
+    cd rialto-webapp
+    npm install
+    ```
+    
+1. Setup sparql-loader  
+    ```
+    cd $GOPATH/src/github.com/sul-dlss/sparql-loader
+    dep ensure
+    ```
+    
 1. Deploy rialto-derivatives
-```
-cd $GOPATH/src/github.com/sul-dlss/rialto-derivatives
-dep ensure
-make deploy-local
-```
+    ```
+    cd $GOPATH/src/github.com/sul-dlss/rialto-derivatives
+    dep ensure
+    make deploy-local
+    ```
 
 ## Starting dev environment
 ```
