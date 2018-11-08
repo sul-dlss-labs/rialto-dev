@@ -8,7 +8,7 @@ A docker-based development environment for RIALTO
 * docker
 * docker-compose
 * golang
-* python3
+* python3 (>= 3.7)
 * pip
 * AWS cli
 
@@ -63,7 +63,7 @@ used by the dev environment in `.env`.
     
 1. Setup sparql-loader  
 
-    First, [install dependencies](https://github.com/sul-dlss/sparql-loader#install-dependencies) such as python 3, pip, and virtualenv. Then:
+    First, [install dependencies](https://github.com/sul-dlss/sparql-loader#install-dependencies) such as python 3.7, pip, and virtualenv. Then:
   
     ```shell
     cd sparql-loader
