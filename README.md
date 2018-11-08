@@ -62,7 +62,7 @@ used by the dev environment in `.env`.
     
 1. Setup sparql-loader  
 
-    First, [install dependencies](https://github.com/sul-dlss/sparql-loader#install-dependencies) such as Python, pip, and virtualenv. Prefer Python >= 3. Then:
+    First, [install dependencies](https://github.com/sul-dlss/sparql-loader#install-dependencies) such as python 3, pip, and virtualenv. Then:
   
     ```shell
     cd sparql-loader
@@ -91,7 +91,7 @@ Rialto and components will now be available at:
 * Blazegraph: http://localhost:9999/blazegraph/
 * Localstack UI: http://localhost:8081/
 * Postgres: port 5432
-* Entity resolver: port 3000
+* Entity resolver: http://localhost:3000/healthcheck
 * Solr: http://localhost:8983/solr/
 * Sparql-loader: http://localhost:8082/sparql
 * Webapp: http://localhost:8080/
