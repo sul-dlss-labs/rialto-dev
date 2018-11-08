@@ -123,6 +123,7 @@ Because this is a local development environment, it is recommended to only load
 a sample of data.
 
 ```shell
+cd rialto-etl
 exe/load call Sparql -i organizations.sparql
 exe/load call Sparql -i researchers_sample.sparql
 ```
@@ -134,7 +135,7 @@ the running webapp to be reloaded.
 
 The first time that you invoke the webapp, there may be a wait as javascript is packed.
 
-If you change any gem files, rebuild the image with:
+If you change any files in that app that do not trigger a reload, rebuild the image manually with:
 
 ```shell
 docker-compose stop webapp
