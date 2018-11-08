@@ -52,7 +52,8 @@ used by the dev environment in `.env`.
       api_key: abc123
     ```
     
-1. Setup rialto-webapp  
+1. Setup rialto-webapp
+
     ```shell
     cd rialto-webapp
     bundle install
@@ -60,16 +61,22 @@ used by the dev environment in `.env`.
     ```
     
 1. Setup sparql-loader  
+
+    First, [install dependencies](https://github.com/sul-dlss/sparql-loader#install-dependencies) such as Python, pip, and virtualenv. Prefer Python >= 3. Then:
+  
     ```shell
-    cd $GOPATH/src/github.com/sul-dlss/sparql-loader
-    dep ensure
+    cd sparql-loader
+    virtualenv -p $(which python3) env
+    source env/bin/activate
+    pip install -r requirements.txt
     ```
     
 1. Deploy rialto-derivatives
+    
     ```shell
     cd $GOPATH/src/github.com/sul-dlss/rialto-derivatives
     dep ensure
-    make deploy-local
+    make local-deploy
     ```
 
 ## Starting dev environment
