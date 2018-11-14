@@ -13,6 +13,12 @@ A docker-compose-based development environment for RIALTO
 * pip
 * AWS cli
 
+## Environment
+
+```
+export GOPATH=~/go
+```
+
 ## Setup
 1. Clone the repos
     ```shell
