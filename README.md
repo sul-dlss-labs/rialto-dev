@@ -48,7 +48,7 @@ used by the dev environment in `.env`.
     
 1. Setup rialto-etl  
     
-    Add `config/local.settings.yml`. In addition to actual API keys, this should include:
+    Add `config/settings.local.yml`. In addition to actual API keys, this should include:
   
     ```yaml
     sparql_writer:
